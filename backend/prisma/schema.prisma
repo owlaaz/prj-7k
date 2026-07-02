@@ -1,0 +1,21 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Planning {
+  id        Int        @id @default(autoincrement())
+  name      String     @default("Untitled plan")
+  locked    Boolean    @default(false)
+  parentId  Int?
+  data      String
+  result    String?
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  parent    Planning?  @relation("Duplicates", fields: [parentId], references: [id])
+  children  Planning[] @relation("Duplicates")
+}
